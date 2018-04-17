@@ -1,0 +1,8 @@
+- name: install redhat-lsb
+  yum: name=redhat-lsb-core state=present
+  register: lsb
+
+# if redhat-lsb was not installed, we need to regather facts or other tasks will fail
+- name: gather lsb facts
+  setup:
+  when: 'lsb.changed'

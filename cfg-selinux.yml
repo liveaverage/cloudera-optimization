@@ -1,0 +1,12 @@
+  - name: Disable SELinux
+    selinux: state=disabled
+    become_method: sudo
+    ignore_errors: yes
+
+  - name: Set SELinux to Disabled
+    lineinfile: state=present dest=/etc/selinux/config backup=yes regexp='^SELINUX\s?=' line='SELINUX=disabled'
+    become: yes
+    become_user: root
+    become_method: sudo
+    ignore_errors: yes
+

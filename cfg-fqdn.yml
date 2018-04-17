@@ -1,0 +1,5 @@
+  - name: Set hostname using Ansible FQDN {{ ansible_fqdn }}
+    hostname: name="{{ ansible_fqdn }}"
+    become: yes
+    become_user: root
+    become_method: sudo

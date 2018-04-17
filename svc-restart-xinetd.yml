@@ -1,0 +1,6 @@
+  - name: Restart Service xinetd
+    service: name=xinetd state=restarted
+    become: yes
+    become_user: root
+    become_method: sudo
+    ignore_errors: yes

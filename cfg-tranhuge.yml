@@ -1,0 +1,3 @@
+  - hosts: cloudera-name-SSC:cloudera-data-SSC 
+    tasks:
+      - include: cfg-transparent_hugepage.yml

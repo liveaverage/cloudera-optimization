@@ -1,0 +1,18 @@
+  - name: Install Subscription Manager
+    yum: name=subscription-manager state=latest
+    become: yes
+    become_user: root
+    become_method: sudo
+
+  - name: Configure Subscription Manager Proxy
+    shell: 'subscription-manager config --server.proxy_hostname=proxy1.global.lmco.com --server.proxy_port=8080'
+    become: yes
+    become_user: root
+    become_method: sudo
+    changed_when: False
+
+  - name: Update yum.conf Proxy
+    lineinfile: state=present dest=/etc/yum.conf backup=yes regexp='^proxy=' line='proxy=http://proxy1.global.lmco.com:8080'
+    become: yes
+    become_user: root
+    become_method: sudo

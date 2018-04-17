@@ -1,0 +1,4 @@
+  - name: Install Oracle JDK
+    yum: name="{{ cdn }}/cm/jdk-8u102-linux-x64.rpm" state=present
+    become: yes
+    become_method: sudo

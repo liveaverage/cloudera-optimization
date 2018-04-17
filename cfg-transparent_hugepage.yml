@@ -1,0 +1,60 @@
+  - name: Disable Transparent Huge Page with GRUB
+    shell: 'grubby --update-kernel=ALL --args=transparent_hugepage=never'
+    become: yes
+    become_user: root
+    become_method: sudo
+    changed_when: False
+
+  - name: Ensure rc.local is working
+    file:
+      path: /etc/rc.d/rc.local
+      mode: 0744
+    become_user: root
+    become_method: sudo
+
+  - name: Ensure rc.local is running
+    service: name=rc-local state=restarted
+    ignore_errors: yes
+    become_user: root
+    become_method: sudo
+
+  - name: Cloudera Reccomendation Disable Huge Page for RHEL6 (TEMP)
+    shell: 'echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag'
+    become: yes
+    become_user: root
+    become_method: sudo
+    changed_when: False
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int < 7
+
+  - name: Cloudera Reccomendation Disable Huge Page for RHEL7 (TEMP)
+    shell: 'echo never > /sys/kernel/mm/transparent_hugepage/defrag'
+    become: yes
+    become_user: root
+    become_method: sudo
+    changed_when: False
+    ignore_errors: yes
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int >= 7
+
+  - name: Cloudera Reccomendation Disable Huge Page for RHEL7 (PERMANENT)
+    lineinfile:
+      line: 'echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag'
+      dest: /etc/rc.d/rc.local
+      state: present
+      insertafter: EOF
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int >= 7
+
+  - name: Cloudera Reccomendation Disable Huge Page for RHEL6 (PERMANENT)
+    lineinfile:
+      line: 'echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag'
+      dest: /etc/rc.d/rc.local
+      state: present
+      insertafter: EOF
+    when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int < 7
+
+
+#  - name: Reboot
+#    shell: 'reboot'
+#    become: yes
+#    become_user: root
+#    become_method: sudo

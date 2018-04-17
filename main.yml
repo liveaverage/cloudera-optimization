@@ -1,0 +1,12 @@
+  - hosts: "all"
+    gather_facts: true
+    tasks:
+      - include: cfg-yum-lsb-core.yml
+      - include: cfg-transparent_hugepage.yml
+      - include: cfg-swappiness.yml
+      - include: cfg-oracle-jdk.yml
+      - include: cfg-fqdn.yml
+      - include: cfg-disable-ipv6.yml
+      - include: svc-restart-xinetd.yml
+      - include: cfg-selinux.yml
+
